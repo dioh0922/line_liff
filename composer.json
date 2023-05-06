@@ -1,6 +1,15 @@
 {
+    "name": "dioh09/line",
+    "authors": [
+        {
+            "name": "dioh0922",
+            "email": "diohound@gmail.com"
+        }
+    ],
     "require": {
         "linecorp/line-bot-sdk": "^7.6",
-        "vlucas/phpdotenv": "^5.5"
+        "robmorgan/phinx": "^0.13.4",
+        "vlucas/phpdotenv": "^5.5",
+        "j4mie/idiorm": "^1.5"
     }
 }
