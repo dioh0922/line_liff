@@ -20,3 +20,4 @@ jobs:
             cd ${{ secrets.SVR_DIR }}
             git pull
             composer install
+            vendor/bin/phpmig migrate
