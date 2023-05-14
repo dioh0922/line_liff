@@ -17,7 +17,7 @@
     $next_month = date('Y-m-d', strtotime('first day of next month', strtotime(date('Y-m-d'))));
 
     $sum = ORM::for_table("credit")
-    ->where_raw('(`created_date` > ? OR `created_date` < ?)', array($month, $next_month))
+    ->where_raw('(`created_date` > ? OR `created_date` < ?) AND is_deleted = 0', array($month, $next_month))
     ->sum("pay_value");
 
     $template = sprintf("今月は合計：%s", number_format($sum));
