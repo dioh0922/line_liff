@@ -35,11 +35,17 @@
                     $current = ORM::for_table("moviedata")
                     ->select("title")
                     ->order_by_desc("date")
-                    ->find_one();
+                    ->limit(3)
+                    ->find_many();
+
+                    $str = "最後に見たのは\n";
+                    foreach($current as $key){
+                        $str .= "・".$key["title"]."\n";
+                    }
 
                     $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient($_ENV["ACCESSTOKEN"]);
                     $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $_ENV["SECRET"]]);        
-                    $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder("最後に見たのは\n".$current["title"]);
+                    $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($str);
                     $response = $bot->pushMessage($_ENV["UID"], $textMessageBuilder);
                     break; 
                 default:
