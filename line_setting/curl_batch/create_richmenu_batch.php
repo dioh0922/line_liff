@@ -2,7 +2,7 @@
     require_once(dirname(__FILE__)."/../../vendor/autoload.php");
     require_once("./RichMenuSetting.php");
 
-    if(!gethostname() == "localhost"){
+    if(gethostname() != "localhost"){
         echo "localhost only";
         return ;
     }
