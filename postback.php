@@ -18,41 +18,36 @@
         "movie" => 3,
         "none" => 99
     ];
+
     if($json != null){
         
         $data = $json->events[0]->postback->data;
-        $data_list = explode("&", $data);
-        foreach($data_list as $value){
-            $params = explode("=", $value);
-            if(!array_key_exists($params[0], $param_list)){
-                // dataに含まれているべき内容のみの場合は実行する
-                return;
-            }
-
-            switch($params[1]){
-                case "movie":
-                    // 映画のpostbackイベントなら最新日付の1つを返す
-                    $current = ORM::for_table("moviedata")
-                    ->select("title")
-                    ->order_by_desc("date")
-                    ->limit(3)
-                    ->find_many();
-
-                    $str = "最後に見たのは\n";
-                    foreach($current as $key){
-                        $str .= "・".$key["title"]."\n";
-                    }
-
-                    $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient($_ENV["ACCESSTOKEN"]);
-                    $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $_ENV["SECRET"]]);        
-                    $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($str);
-                    $response = $bot->pushMessage($_ENV["UID"], $textMessageBuilder);
-                    break; 
-                default:
-                    break;
-            }
+        $params = explode("=", $data);
+        if(!array_key_exists($params[0], $param_list)){
+            // dataに含まれているべき内容のみの場合は実行する
+            return;
         }
 
+        switch($params[1]){
+            case "movie":
+                // 映画のpostbackイベントなら最新日付の1つを返す
+                $current = ORM::for_table("moviedata")
+                ->select("title")
+                ->order_by_desc("date")
+                ->limit(5)
+                ->find_many();
+
+                $str = "最後に見たのは\n";
+                foreach($current as $key){
+                    $str .= "・".$key["title"]."\n";
+                }
+
+                $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($str);
+                $response = $bot->pushMessage($_ENV["UID"], $textMessageBuilder);
+                break; 
+            default:
+                break;
+        }
     }
 
 ?>
