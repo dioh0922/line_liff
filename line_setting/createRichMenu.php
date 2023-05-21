@@ -1,6 +1,11 @@
 <?php
     require_once(dirname(__FILE__)."/../vendor/autoload.php");
 
+    if(!gethostname() == "localhost"){
+        echo "localhost only";
+        return ;
+    }
+
     $env = Dotenv\Dotenv::createImmutable(dirname(__FILE__)."/../../env");
     $env->load();
 
