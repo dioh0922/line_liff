@@ -1,6 +1,11 @@
 <?php
     require_once(dirname(__FILE__)."/../vendor/autoload.php");
 
+    if(!gethostname() == "localhost"){
+        echo "localhost only";
+        return ;
+    }
+
     $env = Dotenv\Dotenv::createImmutable(dirname(__FILE__)."/../../env");
     $env->load();
 
@@ -13,7 +18,8 @@
     $response = $bot->getRichMenuList()->getRawBody();
     $json = json_decode($response);
     foreach($json->richmenus as $value){
-        var_dump($value->richMenuId);
-        //$bot->deleteRichMenu($value->richMenuId);
+        echo $value->richMenuId."<br>";
+        $bot->deleteRichMenu($value->richMenuId);
     }
+    echo "done";
 ?>

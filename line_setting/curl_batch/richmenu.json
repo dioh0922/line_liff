@@ -1,0 +1,89 @@
+{
+  "size": {
+    "width": 2400,
+    "height": 1620
+  },
+  "selected": true,
+  "name": "リマインダー用リッチメニュー",
+  "chatBarText": "メニューを開く",
+  "areas": [
+    {
+      "bounds": {
+        "x": 0,
+        "y": 0,
+        "width": 800,
+        "height": 810
+      },
+      "action": {
+        "type": "postback",
+        "displayText":"最近みた映画",
+        "data":"action=movie"
+      }
+    },
+    {
+      "bounds": {
+          "x": 800,
+          "y": 0,
+          "width": 800,
+          "height": 810
+        },
+        "action": {
+          "type": "postback",
+          "displayText":"TODO表示",
+          "data":"action=reminder"
+        }
+    },
+    {
+      "bounds": {
+        "x": 1600,
+        "y": 0,
+        "width": 800,
+        "height": 810
+      },
+      "action": {
+        "type": "postback",
+        "displyText": "旅行",
+        "data":"action=todo&mode=start"
+      }
+    },
+    {
+      "bounds": {
+        "x": 0,
+        "y": 810,
+        "width": 800,
+        "height": 810
+      },
+      "action": {
+        "type": "uri",
+        "label": "Credit",
+        "uri": "https://liff.line.me/1660850624-blZONQVg"
+      }
+    },
+    {
+      "bounds": {
+        "x": 800,
+        "y": 810,
+        "width": 800,
+        "height": 810
+      },
+      "action": {
+        "type": "postback",
+        "displayText":"TODO編集",
+        "data":"action=reminder"
+      }
+    },      
+    {
+      "bounds": {
+        "x": 1600,
+        "y": 810,
+        "width": 800,
+        "height": 810
+      },
+      "action": {
+        "type": "postback",
+        "displyText": "旅行",
+        "data":"action=todo&mode=start"
+      }
+    }
+  ]
+}
