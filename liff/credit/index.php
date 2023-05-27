@@ -36,14 +36,16 @@
                 <input type="number" min="0" id="pay-value" value="0"/>
             </div>
         </div>
-        <div class="row  mt-5">
-            <button onClick="submit()" class="btn btn-primary btn-lg" >
-                <span id="btn-content">送信</span>
-                <span id="btn-load" class="fade">
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    <span class="visually-hidden">Loading...</span>
-                </span>
-            </button>
+        <div class="row mt-5">
+            <div class="row ms-1 mb-3">
+                <button onClick="submit()" class="btn btn-primary btn-lg" >
+                    <span id="btn-content">送信</span>
+                    <span id="btn-load" class="fade">
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span class="visually-hidden">Loading...</span>
+                    </span>
+                </button>
+            </div>
         </div>
         <div class="row mt-5" >
             <div id="close" class="fade">
