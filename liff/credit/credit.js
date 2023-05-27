@@ -14,7 +14,7 @@ function submit(){
     post_data.append("value", pay);
     post_data.append("detail", detail);
     axios.post("./save.php", post_data).then(res => {
-        document.getElementById("close").className = "row";
+        document.getElementById("close").className = "row ms-1 mb-3";
     }).catch(er => {
 
     }).finally(() => {
