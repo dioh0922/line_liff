@@ -90,5 +90,42 @@ class RichMenuSetting{
         curl_close($curl);
         return $sts;
     }
+
+    public function getDefaultMenuObj(){
+        $curl = curl_init("https://api.line.me/v2/bot/user/all/richmenu");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            "Authorization: Bearer ".$_ENV["ACCESSTOKEN"],
+        ]);
+        curl_exec($curl);
+        $response = curl_multi_getcontent($curl);
+        curl_close($curl);
+        return $response;
+   
+    }
+
+    public function getMenuDetail(string $menuId){
+        $curl = curl_init("https://api.line.me/v2/bot/richmenu/".$menuId);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            "Authorization: Bearer ".$_ENV["ACCESSTOKEN"],
+        ]);
+        curl_exec($curl);
+        $response = curl_multi_getcontent($curl);
+        curl_close($curl);
+        return $response;   
+    }
+
+    public function getEndpointURL(){
+        $curl = curl_init("https://api.line.me/v2/bot/channel/webhook/endpoint");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            "Authorization: Bearer ".$_ENV["ACCESSTOKEN"],
+        ]);
+        curl_exec($curl);
+        $response = curl_multi_getcontent($curl);
+        curl_close($curl);
+        return $response;   
+    }
 }
 ?>
