@@ -42,6 +42,8 @@
                     $str .= "・".$key["title"]."\n";
                 }
 
+                $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient($_ENV["ACCESSTOKEN"]);
+                $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $_ENV["SECRET"]]);        
                 $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($str);
                 $response = $bot->pushMessage($_ENV["UID"], $textMessageBuilder);
                 break; 
