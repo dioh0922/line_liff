@@ -39,8 +39,11 @@
                 ->find_many();
 
                 $str = "【映画】最後に見た5つは\n";
-                foreach($current as $key){
-                    $str .= "・".$key["title"]."\n";
+                foreach($current as $idx => $key){
+                    $str .= "・".$key["title"];
+                    if($idx !== array_key_last($current)){
+                        $str .= "\n";
+                    }
                 }
 
                 $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient($_ENV["ACCESSTOKEN"]);
