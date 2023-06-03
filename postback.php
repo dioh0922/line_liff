@@ -16,6 +16,7 @@
         "reminder" => 1,
         "todo" => 2,
         "movie" => 3,
+        "travel" => 4,
         "none" => 99
     ];
 
@@ -37,7 +38,7 @@
                 ->limit(5)
                 ->find_many();
 
-                $str = "最後に見たのは\n";
+                $str = "【映画】最後に見た5つは\n";
                 foreach($current as $key){
                     $str .= "・".$key["title"]."\n";
                 }
@@ -47,6 +48,30 @@
                 $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($str);
                 $response = $bot->pushMessage($_ENV["UID"], $textMessageBuilder);
                 break; 
+            case "travel":
+                // 映画のpostbackイベントなら最新日付の1つを返す
+                $month = date("Y-m-01 00:00:00");
+                $next_month = date('Y-m-d', strtotime('first day of next month', strtotime(date('Y-m-d'))));
+            
+                $current = ORM::for_table("travel_todo")
+                ->select("destination")
+                ->where_raw('`done_date` >= ? AND `done_date` < ? AND is_deleted = 0 AND is_done = 1', array($month, $next_month))
+                ->order_by_desc("done_date")
+                ->find_many();
+
+                $str = "【旅行】今月は\n";
+                foreach($current as $idx => $key){
+                    $str .= "・".$key["destination"];
+                    if($idx !== array_key_last($current)){
+                        $str .= "\n";
+                    }
+                }
+
+                $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient($_ENV["ACCESSTOKEN"]);
+                $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $_ENV["SECRET"]]);        
+                $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($str);
+                $response = $bot->pushMessage($_ENV["UID"], $textMessageBuilder);                
+                break;
             default:
                 break;
         }
