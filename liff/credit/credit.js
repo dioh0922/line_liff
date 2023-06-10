@@ -1,4 +1,6 @@
 
+let app = null;
+
 (window.onload = () => {
   const { createApp } = Vue;
   const vuetify = Vuetify.createVuetify({
@@ -7,7 +9,7 @@
     }
   });
 
-  createApp({
+  app = createApp({
     data() {
       return {
         pay: 0,
@@ -54,5 +56,6 @@
         this.dialog.disp = false;
       }
     }
-  }).use(vuetify).mount('#container');
+  }).use(vuetify);
+  app.mount('#container');
 });
