@@ -49,6 +49,7 @@
                         <v-btn class="mx-auto" width="80%" color="blue" @click="submit" :loading="loading">送信</v-btn>
                     </v-row>
 
+
                     <v-row v-show="done">
                         <v-btn class="mx-auto mt-10" width="80%" color="grey" @click="submit">トークに戻る</v-btn>
                     </v-row>
