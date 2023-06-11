@@ -10,6 +10,7 @@
   <title>liff初期化</title>
 </head>
 <body>
+  <div id="detail"></div>
   <script src="./init.js"></script>
 </body>
 </html>

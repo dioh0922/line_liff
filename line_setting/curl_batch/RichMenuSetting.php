@@ -127,5 +127,39 @@ class RichMenuSetting{
         curl_close($curl);
         return $response;   
     }
+
+    public function deleteMenu(string $menuId){
+        $curl = curl_init("https://api.line.me/v2/bot/richmenu/".$menuId);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+
+        curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "DELETE");
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            "Authorization: Bearer ".$_ENV["ACCESSTOKEN"],
+        ]);
+        curl_exec($curl);
+
+        $sts = curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
+
+        // エラーがあればエラー内容を表示
+        if (curl_errno($curl)){
+            $result = curl_error($curl);
+            return $result;
+        }
+        curl_close($curl);
+
+        return $sts;
+    }
+
+    public function getAllMenu(){
+        $curl = curl_init("https://api.line.me/v2/bot/richmenu/list");
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($curl, CURLOPT_HTTPHEADER, [
+            "Authorization: Bearer ".$_ENV["ACCESSTOKEN"],
+        ]);
+        curl_exec($curl);
+        $response = curl_multi_getcontent($curl);
+        curl_close($curl);
+        return $response;   
+    }
 }
 ?>
