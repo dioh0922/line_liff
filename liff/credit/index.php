@@ -49,7 +49,7 @@
                     </v-row>
 
                      <v-row v-show="done">
-                        <v-btn class="mx-auto mt-10" width="80%" color="grey" @click="submit">トークに戻る</v-btn>
+                        <v-btn class="mx-auto mt-10" width="80%" color="grey" @click="done">トークに戻る</v-btn>
                     </v-row>
 
                      </v-container>
