@@ -52,7 +52,6 @@
                 $response = $bot->pushMessage($_ENV["UID"], $textMessageBuilder);
                 break; 
             case "travel":
-                // 映画のpostbackイベントなら最新日付の1つを返す
                 $month = date("Y-m-01 00:00:00");
                 $next_month = date('Y-m-d', strtotime('first day of next month', strtotime(date('Y-m-d'))));
             
