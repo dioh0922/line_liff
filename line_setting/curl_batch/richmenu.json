@@ -41,9 +41,9 @@
         "height": 810
       },
       "action": {
-        "type": "postback",
-        "displyText": "旅行",
-        "data":"action=todo&mode=start"
+        "type": "uri",
+        "label": "TravelTODO",
+        "uri": "https://liff.line.me/1661128633-1x7VQwKm/travel"
       }
     },
     {
