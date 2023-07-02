@@ -63,6 +63,7 @@ class RichMenuSetting{
         curl_setopt($curl, CURLOPT_POST, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, [
             "Authorization: Bearer ".$_ENV["ACCESSTOKEN"],
+            "Content-Length: 0"
         ]);
         curl_exec($curl);
 
