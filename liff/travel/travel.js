@@ -18,12 +18,24 @@
           }
         },
         methods:{
+          fetchTodo(){
+            axios.get("./get.php").then(res => {
+              if(res.data.result == 1){
+                this.loading = false;
+                this.lists = res.data.lists;
+                this.isInit = true;
+              }
+            }).catch(err => {
+              this.loading = false;
+            });
+          },
           submit(){
             this.loading = true;
             let post = new FormData();
             post.append("destination", this.text);
             axios.post("./add.php", post).then(res => {
               this.loading = false;
+              this.fetchTodo();
             }).catch(err => {
               this.loading = false;
             });
@@ -34,21 +46,14 @@
             post.append("destination", e);
             axios.post("./done.php", post).then(res => {
               this.loading = false;
+              this.fetchTodo();
             }).catch(err => {
               this.loading = false;
             }); 
           }
         },
         mounted(){
-          axios.get("./get.php").then(res => {
-            if(res.data.result == 1){
-              this.loading = false;
-              this.lists = res.data.lists;
-              this.isInit = true;
-            }
-          }).catch(err => {
-            this.loading = false;
-          })
+          this.fetchTodo();
         }
       }).use(vuetify).mount('#container');
     });
