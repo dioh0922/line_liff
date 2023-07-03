@@ -27,32 +27,36 @@
             </v-app-bar>
             <v-main>
                 <v-container>
-                    <v-row>
-                        <h3 class="mx-auto">内容</h3>
+                    <v-row justify="center" v-if="!isInit">
+                        <v-progress-circular indeterminate :size="79"></v-progress-circular>
                     </v-row>
-                    <v-row>
-                        <v-col cols="10" class="mx-auto">
-                            <v-text-field class="mx-auto" width="60%" v-model="detail"></v-text-field>
-                        </v-col>
-                    </v-row>
-                    <v-row>
-                        <h3 class="mx-auto">金額</h3>
-                    </v-row>
-                    <v-row>
-                        <v-col cols="10" class="mx-auto">
-                            <v-text-field class="mx-auto" type="number" min="1" width="60%" v-model="pay"></v-text-field>
-                        </v-col>
-                    </v-row>
+                    <div v-else>
+                        <v-row>
+                            <h3 class="mx-auto">内容</h3>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="10" class="mx-auto">
+                                <v-text-field class="mx-auto" width="60%" v-model="detail"></v-text-field>
+                            </v-col>
+                        </v-row>
+                        <v-row>
+                            <h3 class="mx-auto">金額</h3>
+                        </v-row>
+                        <v-row>
+                            <v-col cols="10" class="mx-auto">
+                                <v-text-field class="mx-auto" type="number" min="1" width="60%" v-model="pay"></v-text-field>
+                            </v-col>
+                        </v-row>
 
-                    <v-row v-show="!done">
-                        <v-btn class="mx-auto" width="80%" color="blue" @click="submit" :loading="loading">送信</v-btn>
-                    </v-row>
+                        <v-row v-show="!complete">
+                            <v-btn class="mx-auto" width="80%" color="blue" @click="submit" :loading="loading">送信</v-btn>
+                        </v-row>
 
-                     <v-row v-show="done">
-                        <v-btn class="mx-auto mt-10" width="80%" color="grey" @click="done">トークに戻る</v-btn>
-                    </v-row>
-
-                     </v-container>
+                        <v-row v-show="complete">
+                            <v-btn class="mx-auto mt-10" width="80%" color="grey" @click="done">トークに戻る</v-btn>
+                        </v-row>
+                    </div>
+                </v-container>
             </v-main>
             <v-dialog v-model="dialog.disp">
                 <v-card>
