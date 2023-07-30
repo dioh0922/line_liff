@@ -64,7 +64,7 @@ const submit = () => {
   loading.value = true;
 
   let post_data = new FormData();
-  post_data.append("value", pay.value.toString());
+  post_data.append("value", pay.value);
   post_data.append("detail", detail.value);
   axios.post("./save.php", post_data).then(res => {
       complete.value = true;
