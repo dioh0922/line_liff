@@ -23,4 +23,5 @@ jobs:
             vendor/bin/phpmig migrate
             cd liff
             npm install
+            export NODE_OPTIONS="--max-old-space-size=400"
             npm run build
