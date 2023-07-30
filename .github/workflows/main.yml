@@ -21,3 +21,5 @@ jobs:
             git pull
             composer install
             vendor/bin/phpmig migrate
+            cd liff
+            npm run build
