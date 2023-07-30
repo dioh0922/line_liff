@@ -7,7 +7,8 @@ module.exports = {
 
   entry: {
     "credit":"./credit/credit.ts",
-    "todo":"./todo/todo.ts"
+    "todo":"./todo/todo.ts",
+    "travel": "./travel/travel.ts"
   },
 
   output: {
