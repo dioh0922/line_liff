@@ -2,7 +2,7 @@
     require_once(dirname(__FILE__)."/../../vendor/autoload.php");
     require_once("./RichMenuSetting.php");
 
-    if(php_sapi_name() != "cli"){
+    if($_SERVER["HTTP_HOST"] != "localhost"){
         echo "localhost only";
         return ;
     }

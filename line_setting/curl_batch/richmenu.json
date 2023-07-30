@@ -30,7 +30,7 @@
         "action": {
           "type": "postback",
           "displayText":"TODO表示",
-          "data":"action=todo"
+          "data":"action=reminder"
         }
     },
     {
@@ -67,9 +67,9 @@
         "height": 810
       },
       "action": {
-        "type": "uri",
-        "label": "Todo",
-        "uri": "https://liff.line.me/1661128633-1x7VQwKm/todo"
+        "type": "postback",
+        "displayText":"TODO編集",
+        "data":"action=reminder"
       }
     },      
     {
@@ -81,7 +81,7 @@
       },
       "action": {
         "type": "postback",
-        "displayText": "旅行",
+        "displyText": "旅行",
         "data":"action=travel"
       }
     }
