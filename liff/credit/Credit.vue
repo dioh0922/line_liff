@@ -44,7 +44,7 @@
 import {onMounted, ref} from "vue"
 import axios from "axios"
 import liff from "@line/liff"
-import Dialog from "../util/components/Dialog.vue"
+import Dialog from "@/util/components/Dialog.vue"
 const dialog = ref({
   msg: "",
   disp: false

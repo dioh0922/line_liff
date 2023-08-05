@@ -39,6 +39,9 @@ module.exports = {
     ]
   },
   resolve: {
+    alias:{
+      "@":__dirname
+    },
     extensions: [".ts", ".vue"]
   },
   plugins:[
