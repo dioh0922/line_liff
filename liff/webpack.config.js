@@ -39,7 +39,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: [".ts"]
+    extensions: [".ts", ".vue"]
   },
   plugins:[
     new VueLoaderPlugin(),
