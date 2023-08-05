@@ -1,5 +1,6 @@
 const { VueLoaderPlugin } = require('vue-loader')
 const webpack = require('webpack');
+const path = require('path');
 module.exports = {
   mode: "development",
 
@@ -40,7 +41,7 @@ module.exports = {
   },
   resolve: {
     alias:{
-      "@":__dirname
+      "@/util/components":path.resolve(__dirname + "/util/components")
     },
     extensions: [".ts", ".vue"]
   },
