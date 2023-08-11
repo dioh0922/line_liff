@@ -4,9 +4,12 @@
     "module": "ES2015",
     "target": "ES5",
     "moduleResolution": "node",
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths":{
-      "@util/components/*":["util/components/*"]
+      "util/*":["util/components/*"]
     }
-  }
+  },
+  "include":[
+    "./util/**/*"
+  ]
 }
