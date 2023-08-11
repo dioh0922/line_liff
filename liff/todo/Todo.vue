@@ -64,7 +64,7 @@
 import {ref, onMounted} from "vue"
 import axios from "axios"
 import liff from "@line/liff"
-import Dialog from "/util/components/Dialog.vue"
+import Dialog from "../util/components/Dialog.vue"
 import TaskDialog from "./TaskDialog.vue"
 const title = ref("")
 const todo = ref("")
