@@ -1,6 +1,8 @@
 const { VueLoaderPlugin } = require('vue-loader')
 const webpack = require('webpack');
 const path = require('path');
+const { TsconfigPathsPlugin } = require('tsconfig-paths-webpack-plugin');
+
 module.exports = {
   mode: "development",
 
@@ -48,7 +50,7 @@ module.exports = {
     alias:{
       "@": path.resolve(__dirname, "util")
     },
-    
+    plugins: [new TsconfigPathsPlugin({ configFile: './tsconfig.json' })],
     extensions: [".ts", ".vue"]
   },
   plugins:[

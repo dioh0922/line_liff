@@ -5,6 +5,9 @@
     "target": "ES5",
     "moduleResolution": "node",
     "baseUrl": "./",
-    "paths":{"@/*":["./util/*"]}
+    "paths":{
+      "@/*":["./util/*"], 
+      "~/*":["./*"]
+    }
   },
 }
