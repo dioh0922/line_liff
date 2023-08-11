@@ -4,6 +4,6 @@
     "module": "ES2015",
     "target": "ES5",
     "moduleResolution": "node",
-    "baseUrl": "liff"
+    "baseUrl": "./"
   }
 }
