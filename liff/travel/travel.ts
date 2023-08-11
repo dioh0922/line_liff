@@ -1,6 +1,6 @@
 
 import {createApp} from "vue"
-import {vuetify} from"../util/vuetify"
+import {vuetify} from "@/vuetify"
 import Todo from "./Travel.vue"
 
 (window.onload = () => {
