@@ -41,7 +41,8 @@ module.exports = {
   },
   resolve: {
     alias:{
-      "@/util/components":path.resolve(__dirname + "/util/components")
+      root: path.resolve(__dirname)
+      //"@/util/components":path.resolve(__dirname + "/util/components")
     },
     extensions: [".ts", ".vue"]
   },

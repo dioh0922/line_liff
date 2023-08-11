@@ -50,7 +50,7 @@
 import {ref, onMounted} from "vue"
 import axios from "axios"
 import liff from "@line/liff"
-import Dialog from "/util/components/Dialog.vue"
+import Dialog from "../util/components/Dialog.vue"
 const text = ref("")
 const lists = ref([])
 const loading = ref(false)
