@@ -1,6 +1,8 @@
 const { VueLoaderPlugin } = require('vue-loader')
 const webpack = require('webpack');
 const path = require('path');
+const { TsconfigPathsPlugin } = require('tsconfig-paths-webpack-plugin');
+
 module.exports = {
   mode: "development",
 
@@ -40,8 +42,20 @@ module.exports = {
     ]
   },
   resolve: {
-    
+
+    modules:[
+      path.resolve("./node_modules"),
+      path.resolve("./util")
+    ],
+    alias:{
+      "@": path.resolve(__dirname, "util")
+    },
+    plugins: [new TsconfigPathsPlugin({ configFile: './tsconfig.json' })],
     extensions: [".ts", ".vue"]
+  },
+  performance: {
+    maxEntrypointSize: 10000000,
+    maxAssetSize: 10000000
   },
   plugins:[
     new VueLoaderPlugin(),
