@@ -53,6 +53,10 @@ module.exports = {
     plugins: [new TsconfigPathsPlugin({ configFile: './tsconfig.json' })],
     extensions: [".ts", ".vue"]
   },
+  performance: {
+    maxEntrypointSize: 10000000,
+    maxAssetSize: 10000000
+  },
   plugins:[
     new VueLoaderPlugin(),
     new webpack.DefinePlugin({
