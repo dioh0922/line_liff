@@ -25,4 +25,4 @@ jobs:
             cd liff
             npm install
             export NODE_OPTIONS="--max-old-space-size=400"
-            npm run build
+            npm run prod
