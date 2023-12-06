@@ -95,8 +95,10 @@ const submit = () => {
   post.append("destination", text.value);
   axios.post("./add.php", post).then(res => {
     if(res.data.result == 1){
+      text.value = "";
       loading.value = false;
       fetchTodo();
+      openDialog("行先を追加しました");
     }else{
       openDialog("追加に失敗しました")
     }
