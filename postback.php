@@ -3,7 +3,7 @@
 
     $env = Dotenv\Dotenv::createImmutable(dirname(__FILE__)."/../env");
     $env->load();
-    ORM::configure("mysql:host=localhost;charset=utf8;dbname=".$_ENV["DB_DB"]);
+    ORM::configure("mysql:host=".$_ENV["DB_HOST"].";charset=utf8;dbname=".$_ENV["DB_DB"]);
     ORM::configure("username", $_ENV["DB_USER"]);
     ORM::configure("password", $_ENV["DB_PASS"]);
 
@@ -46,10 +46,19 @@
                     }
                 }
 
-                $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient($_ENV["ACCESSTOKEN"]);
-                $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $_ENV["SECRET"]]);        
-                $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($str);
-                $response = $bot->pushMessage($_ENV["UID"], $textMessageBuilder);
+                $client = new \GuzzleHttp\Client();
+                $config = new \LINE\Clients\MessagingApi\Configuration();
+                $config->setAccessToken($_ENV["ACCESSTOKEN"]);
+                $messagingApi = new \LINE\Clients\MessagingApi\Api\MessagingApiApi(
+                client: $client,
+                config: $config,
+                );
+            
+                $message = new \LINE\Clients\MessagingApi\Model\TextMessage(['type' => 'text','text' => $str]);
+                $request = new \LINE\Clients\MessagingApi\Model\PushMessageRequest([
+                    'to' => $_ENV["UID"],
+                    'messages' => [$message],
+                ]);
                 break; 
             case "travel":
                 $month = date("Y-m-01 00:00:00");
@@ -69,10 +78,19 @@
                     }
                 }
 
-                $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient($_ENV["ACCESSTOKEN"]);
-                $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $_ENV["SECRET"]]);        
-                $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($str);
-                $response = $bot->pushMessage($_ENV["UID"], $textMessageBuilder);                
+                $client = new \GuzzleHttp\Client();
+                $config = new \LINE\Clients\MessagingApi\Configuration();
+                $config->setAccessToken($_ENV["ACCESSTOKEN"]);
+                $messagingApi = new \LINE\Clients\MessagingApi\Api\MessagingApiApi(
+                client: $client,
+                config: $config,
+                );
+            
+                $message = new \LINE\Clients\MessagingApi\Model\TextMessage(['type' => 'text','text' => $str]);
+                $request = new \LINE\Clients\MessagingApi\Model\PushMessageRequest([
+                    'to' => $_ENV["UID"],
+                    'messages' => [$message],
+                ]);
                 break;
             case "todo":
                 $current = ORM::for_table("dev_task_list")
@@ -89,10 +107,20 @@
                     }
                 }
 
-                $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient($_ENV["ACCESSTOKEN"]);
-                $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $_ENV["SECRET"]]);        
-                $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($str);
-                $response = $bot->pushMessage($_ENV["UID"], $textMessageBuilder);                
+                $client = new \GuzzleHttp\Client();
+                $config = new \LINE\Clients\MessagingApi\Configuration();
+                $config->setAccessToken($_ENV["ACCESSTOKEN"]);
+                $messagingApi = new \LINE\Clients\MessagingApi\Api\MessagingApiApi(
+                client: $client,
+                config: $config,
+                );
+            
+                $message = new \LINE\Clients\MessagingApi\Model\TextMessage(['type' => 'text','text' => $str]);
+                $request = new \LINE\Clients\MessagingApi\Model\PushMessageRequest([
+                    'to' => $_ENV["UID"],
+                    'messages' => [$message],
+                ]);
+                
                 break;
             default:
                 break;
