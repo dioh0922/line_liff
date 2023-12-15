@@ -58,6 +58,7 @@
                     }
                 }
 
+                
                 $client = new \GuzzleHttp\Client();
                 $config = new \LINE\Clients\MessagingApi\Configuration();
                 $config->setAccessToken($_ENV["ACCESSTOKEN"]);
@@ -72,7 +73,9 @@
                     "messages" => [$message],
                 ]);
 
-                $log->info("success send message");
+                $response = $messagingApi->pushMessage($request);
+
+                $log->info("success send message", ["response" => $response]);
 
                 break; 
             case "travel":
@@ -110,7 +113,9 @@
                     "messages" => [$message],
                 ]);
 
-                $log->info("success send message");
+                $response = $messagingApi->pushMessage($request);
+
+                $log->info("success send message", ["response" => $response]);
 
                 break;
             case "todo":
@@ -146,7 +151,9 @@
                     "messages" => [$message],
                 ]);
                 
-                $log->info("success send message");
+                $response = $messagingApi->pushMessage($request);
+
+                $log->info("success send message", ["response" => $response]);
 
                 break;
             default:
