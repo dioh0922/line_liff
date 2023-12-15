@@ -1,5 +1,7 @@
 <?php
     require_once("./vendor/autoload.php");
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
 
     $env = Dotenv\Dotenv::createImmutable(dirname(__FILE__)."/../env");
     $env->load();
@@ -20,23 +22,33 @@
         "none" => 99
     ];
 
+    $log = new Logger('postback-log');
+    $log->pushHandler(new StreamHandler('logs/event.log', Logger::DEBUG));
+    $log->info('receive event');
+
     if($json != null){
         
         $data = $json->events[0]->postback->data;
         $params = explode("=", $data);
         if(!array_key_exists($params[0], $param_list)){
             // dataに含まれているべき内容のみの場合は実行する
+            $log->error('invalid data');        
             return;
         }
 
+        $log->info('handle event', ["event" => $params[1]]);
+
         switch($params[1]){
             case "movie":
+
                 // 映画のpostbackイベントなら最新日付の1つを返す
                 $current = ORM::for_table("moviedata")
                 ->select("title")
                 ->order_by_desc("date")
                 ->limit(5)
                 ->find_many();
+
+                $log->debug('success access DB');
 
                 $str = "【映画】最後に見た5つは\n";
                 foreach($current as $idx => $key){
@@ -59,8 +71,12 @@
                     'to' => $_ENV["UID"],
                     'messages' => [$message],
                 ]);
+
+                $log->info('success send message');
+
                 break; 
             case "travel":
+
                 $month = date("Y-m-01 00:00:00");
                 $next_month = date('Y-m-d', strtotime('first day of next month', strtotime(date('Y-m-d'))));
             
@@ -69,6 +85,8 @@
                 ->where_raw('`done_date` >= ? AND `done_date` < ? AND is_deleted = 0 AND is_done = 1', array($month, $next_month))
                 ->order_by_desc("done_date")
                 ->find_many();
+
+                $log->debug('success access DB');
 
                 $str = "【旅行】今月は\n";
                 foreach($current as $idx => $key){
@@ -91,13 +109,20 @@
                     'to' => $_ENV["UID"],
                     'messages' => [$message],
                 ]);
+
+                $log->info('success send message');
+
                 break;
             case "todo":
+                //TODO: 別の管理プロジェクトとDB統合予定
+
                 $current = ORM::for_table("dev_task_list")
                 ->select("todo_title", "title")
                 ->where_raw('is_deleted = 0 AND is_completed = 0')
                 ->order_by_desc("todo_title")
                 ->find_many();
+
+                $log->debug('success access DB');
 
                 $str = "【タスク】\n";
                 foreach($current as $idx => $key){
@@ -121,10 +146,16 @@
                     'messages' => [$message],
                 ]);
                 
+                $log->info('success send message');
+
                 break;
             default:
+                $log->info('missing action', ["event" => $params[1]]);
                 break;
         }
+        $log->info('handle end');
+    }else{
+        $log->error('empty json', ["data" => $json]);    
     }
 
 ?>
