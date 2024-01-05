@@ -7,11 +7,12 @@
         }
     ],
     "require": {
-        "linecorp/line-bot-sdk": "^7.6",
+        "linecorp/line-bot-sdk": "^9.3",
         "vlucas/phpdotenv": "^5.5",
         "j4mie/idiorm": "^1.5",
         "davedevelopment/phpmig": "^1.7",
-        "pimple/pimple": "^3.5"
+        "pimple/pimple": "^3.5",
+        "monolog/monolog": "^3.5"
     },
     "require-dev": {
         "phpstan/phpstan": "^1.10"

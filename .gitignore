@@ -8,3 +8,4 @@ composer.phar
 .eslintrc
 /liff/dist
 /liff/node_modules
+/logs

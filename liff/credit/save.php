@@ -1,6 +1,10 @@
 <?php
     require_once(dirname(__FILE__)."/../../vendor/autoload.php");
 
+    use LINE\LINEBot\Constant\HTTPHeader;
+    use LINE\LINEBot\HTTPClient\CurlHTTPClient;
+    use LINE\LINEBot;
+
     $env = Dotenv\Dotenv::createImmutable(dirname(__FILE__)."/../../../env");
     $env->load();
     ORM::configure("mysql:host=".$_ENV["DB_HOST"].";port=".$_ENV["DB_PORT"]."charset=utf8;dbname=".$_ENV["DB_DB"]);
@@ -20,12 +24,20 @@
     ->where_raw('(`created_date` > ? AND `created_date` < ?) AND is_deleted = 0', array($month, $next_month))
     ->sum("pay_value");
 
-    $template = sprintf("今月は合計：%s", number_format($sum));
+    $client = new \GuzzleHttp\Client();
+    $config = new \LINE\Clients\MessagingApi\Configuration();
+    $config->setAccessToken($_ENV["ACCESSTOKEN"]);
+    $messagingApi = new \LINE\Clients\MessagingApi\Api\MessagingApiApi(
+    client: $client,
+    config: $config,
+    );
 
-    $httpClient = new \LINE\LINEBot\HTTPClient\CurlHTTPClient($_ENV["ACCESSTOKEN"]);
-    $bot = new \LINE\LINEBot($httpClient, ['channelSecret' => $_ENV["SECRET"]]);        
-    $textMessageBuilder = new \LINE\LINEBot\MessageBuilder\TextMessageBuilder($template);
-    $response = $bot->pushMessage($_ENV["UID"], $textMessageBuilder);
+    $message = new \LINE\Clients\MessagingApi\Model\TextMessage(['type' => 'text','text' => sprintf("今月は合計：%s", number_format($sum))]);
+    $request = new \LINE\Clients\MessagingApi\Model\PushMessageRequest([
+        'to' => $_ENV["UID"],
+        'messages' => [$message],
+    ]);
+    $response = $messagingApi->pushMessage($request);
 
     echo json_encode($response, JSON_UNESCAPED_UNICODE);
 ?>
