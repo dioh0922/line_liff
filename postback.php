@@ -121,10 +121,10 @@
             case "todo":
                 //TODO: 別の管理プロジェクトとDB統合予定
 
-                $current = ORM::for_table("dev_task_list")
-                ->select("todo_title", "title")
-                ->where_raw("is_deleted = 0 AND is_completed = 0")
-                ->order_by_desc("todo_title")
+                $current = ORM::for_table("tasks")
+                ->select("summary", "title")
+                ->where("is_delete", 0)
+                ->order_by_desc("created_at")
                 ->find_many();
 
                 $log->debug("success access DB");
