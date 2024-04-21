@@ -7,11 +7,12 @@
     ORM::configure("username", $_ENV["DB_USER"]);
     ORM::configure("password", $_ENV["DB_PASS"]);
 
-    $credit = ORM::for_table("dev_task_list")->create();
-    $credit->todo_title = $_POST["title"];
-    $credit->todo_detail = $_POST["todo"];
-    $credit->set_expr("created_date", "NOW()");
-    $credit->save();
+    $task = ORM::for_table("tasks")->create();
+    $task->summary = $_POST["title"];
+    $task->detail = $_POST["todo"];
+    $task->set_expr("created_at", "NOW()");
+    $task->set_expr("updated_at", "NOW()");
+    $task->save();
 
     $response = ["result" => 1];
 
