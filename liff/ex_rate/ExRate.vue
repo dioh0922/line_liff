@@ -12,12 +12,15 @@
           <div v-else>
               
               <v-row>
-                <v-col>
-                  値段<v-text-field type="number" class="outline" v-model="target" ></v-text-field>
-                </v-col>
-                <v-col>
-                  レート(￥/＄)：{{rate}} 
-                </v-col>
+                  <v-col>
+                    1＄：￥{{rate}}
+                  </v-col>
+              </v-row>
+
+              <v-row>
+                  <v-col class="my-2">
+                    値段<v-text-field type="number" class="outline" v-model="target" ></v-text-field>
+                  </v-col>
               </v-row>
 
               <v-row>
