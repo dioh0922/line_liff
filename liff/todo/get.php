@@ -7,10 +7,11 @@
     ORM::configure("username", $_ENV["DB_USER"]);
     ORM::configure("password", $_ENV["DB_PASS"]);
 
-    $tasks = ORM::for_table("dev_task_list")
-    ->select("todo_title", "title")
-    ->select("todo_detail", "detail")
-    ->where_raw('is_completed = 0 AND is_deleted = 0')
+    $tasks = ORM::for_table("tasks")
+    ->select("summary", "title")
+    ->select("detail", "detail")
+    ->where("is_delete", 0)
+    ->order_by_desc("created_at")
     ->find_array();
 
     $response = ["result" => 1, "lists" => $tasks];
