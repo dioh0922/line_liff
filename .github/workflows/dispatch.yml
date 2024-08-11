@@ -18,6 +18,8 @@ jobs:
             cd ${{ secrets.SVR_DIR }}
             git pull
             composer install
+            vendor/bin/phpmig migrate
+            cd liff
             npm install
-            php artisan migrate
-            php artisan view:clear
+            export NODE_OPTIONS="--max-old-space-size=400"
+            npm run dev
