@@ -25,6 +25,7 @@
     $log = new Logger("postback-log");
     $log->pushHandler(new StreamHandler(sprintf("logs/%s.log", date("Ymd")), Logger::DEBUG));
     $log->info("receive event");
+    $log->info("recieve request", ["request" => $json]);
 
     if($json != null){
         
