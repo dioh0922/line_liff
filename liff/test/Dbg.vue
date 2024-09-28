@@ -47,6 +47,7 @@ const submit = () => {
   post_data.append("token", liff.getIDToken());
   axios.post("./dbg.php", post_data).then(res => {
       complete.value = true;
+      openDialog(res);
   }).catch((er) => {
       openDialog(er);
   }).finally(() => {
