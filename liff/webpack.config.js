@@ -12,7 +12,8 @@ module.exports = {
     "credit":"./credit/credit.ts",
     //"todo":"./todo/todo.ts",
     "rate":"./ex_rate/rate.ts",
-    "travel": "./travel/travel.ts"
+    "travel": "./travel/travel.ts",
+    "dbg":"./dbg/dbg.ts"
   },
 
   output: {
