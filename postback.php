@@ -29,6 +29,7 @@
     if($json != null){
         
         $data = $json->events[0]->postback->data;
+        $to_user_id = $json->events[0]->source->userId;
         $params = explode("=", $data);
         if(!array_key_exists($params[0], $param_list)){
             // dataに含まれているべき内容のみの場合は実行する
@@ -69,7 +70,8 @@
             
                 $message = new \LINE\Clients\MessagingApi\Model\TextMessage(["type" => "text","text" => $str]);
                 $request = new \LINE\Clients\MessagingApi\Model\PushMessageRequest([
-                    "to" => $_ENV["UID"],
+                    //"to" => $_ENV["UID"],
+                    "to" => $to_user_id,
                     "messages" => [$message],
                 ]);
 
@@ -109,7 +111,8 @@
             
                 $message = new \LINE\Clients\MessagingApi\Model\TextMessage(["type" => "text","text" => $str]);
                 $request = new \LINE\Clients\MessagingApi\Model\PushMessageRequest([
-                    "to" => $_ENV["UID"],
+                    //"to" => $_ENV["UID"],
+                    "to" => $to_user_id,
                     "messages" => [$message],
                 ]);
 
@@ -147,7 +150,8 @@
             
                 $message = new \LINE\Clients\MessagingApi\Model\TextMessage(["type" => "text","text" => $str]);
                 $request = new \LINE\Clients\MessagingApi\Model\PushMessageRequest([
-                    "to" => $_ENV["UID"],
+                    //"to" => $_ENV["UID"],
+                    "to" => $to_user_id,
                     "messages" => [$message],
                 ]);
                 
