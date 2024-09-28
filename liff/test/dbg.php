@@ -1,5 +1,7 @@
 <?php
     require_once(dirname(__FILE__)."/../../vendor/autoload.php");
+    use Monolog\Logger;
+    use Monolog\Handler\StreamHandler;
 
     use LINE\LINEBot\Constant\HTTPHeader;
     use LINE\LINEBot\HTTPClient\CurlHTTPClient;
@@ -10,6 +12,11 @@
     ORM::configure("mysql:host=".$_ENV["DB_HOST"].";port=".$_ENV["DB_PORT"]."charset=utf8;dbname=".$_ENV["DB_DB"]);
     ORM::configure("username", $_ENV["DB_USER"]);
     ORM::configure("password", $_ENV["DB_PASS"]);
+
+    $log = new Logger("postback-log");
+    $log->pushHandler(new StreamHandler(sprintf("logs/%s.log", date("Ymd")), Logger::DEBUG));
+
+    $log->info("handle event", ["request" => $_POST]);
 
     /*
     // LINEに今月の合計を返す
