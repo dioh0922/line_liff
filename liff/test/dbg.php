@@ -4,6 +4,7 @@
     use Monolog\Handler\StreamHandler;
 
     use LINE\LINEBot\Constant\HTTPHeader;
+
     use LINE\LINEBot;
 
     $env = Dotenv\Dotenv::createImmutable(dirname(__FILE__)."/../../../env");
@@ -47,25 +48,6 @@
     curl_close($ch);
 
     $log->info("response", ["res" => $response]);
-    //firebase/php-jwt
-    //jwtのsubがID
-
-    /*
-    $client = new \GuzzleHttp\Client();
-    $config = new \LINE\Clients\MessagingApi\Configuration();
-    $config->setAccessToken($_ENV["ACCESSTOKEN"]);
-    $messagingApi = new \LINE\Clients\MessagingApi\Api\MessagingApiApi(
-    client: $client,
-    config: $config,
-    );
-
-    $message = new \LINE\Clients\MessagingApi\Model\TextMessage(['type' => 'text','text' => sprintf("今月は合計：%s", number_format($sum))]);
-    $request = new \LINE\Clients\MessagingApi\Model\PushMessageRequest([
-        'to' => $_ENV["UID"],
-        'messages' => [$message],
-    ]);
-    $response = $messagingApi->pushMessage($request);
-    */
 
     echo $response;
 ?>
