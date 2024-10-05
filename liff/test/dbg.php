@@ -18,19 +18,11 @@
 
     $log->info("handle event", ["request" => $_POST]);
 
-    /*
-    // LINEに今月の合計を返す
-    $credit = ORM::for_table("credit")->create();
-    $credit->pay_value = $_POST["value"];
-    $credit->pay_detail = $_POST["detail"];
-    $credit->set_expr("created_date", "NOW()");
-    $credit->save();
-    $month = date("Y-m-01");
-    $next_month = date('Y-m-d', strtotime('first day of next month', strtotime(date('Y-m-d'))));
+    $eve = $_POST["event"];
+    $target = $eve[0];
+    $source = $target["source"];
+    $log->info("target source", ["request" => $source]);
 
-    $sum = ORM::for_table("credit")
-    ->where_raw('(`created_date` > ? AND `created_date` < ?) AND is_deleted = 0', array($month, $next_month))
-    ->sum("pay_value");
 
     $client = new \GuzzleHttp\Client();
     $config = new \LINE\Clients\MessagingApi\Configuration();
