@@ -24,6 +24,7 @@
 
     // LINEに今月の合計を返す
 
+    /*
     $client = new \GuzzleHttp\Client();
     $config = new \LINE\Clients\MessagingApi\Configuration();
     $config->setAccessToken($_ENV["ACCESSTOKEN"]);
