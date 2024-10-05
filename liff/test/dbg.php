@@ -4,7 +4,7 @@
     use Monolog\Handler\StreamHandler;
 
     use LINE\LINEBot\Constant\HTTPHeader;
-    use LINE\LINEBot\HTTPClient\CurlHTTPClient;
+
     use LINE\LINEBot;
 
     $env = Dotenv\Dotenv::createImmutable(dirname(__FILE__)."/../../../env");
@@ -18,28 +18,36 @@
 
     $log->info("handle event", ["request" => $_POST]);
 
-    $eve = $_POST["event"];
-    $target = $eve[0];
-    $source = $target["source"];
-    $log->info("target source", ["request" => $source]);
+    $token = $_POST["token"];
+    if($token == null){
+        $token = $_ENV["UID"];
+    }
 
-
-    /*
-    $client = new \GuzzleHttp\Client();
-    $config = new \LINE\Clients\MessagingApi\Configuration();
-    $config->setAccessToken($_ENV["ACCESSTOKEN"]);
-    $messagingApi = new \LINE\Clients\MessagingApi\Api\MessagingApiApi(
-    client: $client,
-    config: $config,
-    );
-
-    $message = new \LINE\Clients\MessagingApi\Model\TextMessage(['type' => 'text','text' => sprintf("今月は合計：%s", number_format($sum))]);
-    $request = new \LINE\Clients\MessagingApi\Model\PushMessageRequest([
-        'to' => $_ENV["UID"],
-        'messages' => [$message],
+    // POSTデータを設定
+    $postFields = http_build_query([
+        "id_token" => $token,
+        "client_id" => $_ENV["CHANNELID"]
     ]);
-    $response = $messagingApi->pushMessage($request);
-    */
 
-    echo json_encode($_POST, JSON_UNESCAPED_UNICODE);
+    $url = 'https://api.line.me/oauth2/v2.1/verify';
+
+    // cURLセッションの初期化
+    $ch = curl_init($url);
+
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
+
+    // リクエストの実行
+    $response = curl_exec($ch);
+
+    // エラーチェック
+    if (curl_errno($ch)) {
+        $log->error('Error: ',["msg" => curl_error($ch)]);
+    }
+
+    // cURLセッションを閉じる
+    curl_close($ch);
+
+    $log->info("response", ["res" => $response]);
+
+    echo $response;
 ?>
