@@ -17,12 +17,12 @@
     $log->pushHandler(new StreamHandler(sprintf("logs/%s.log", date("Ymd")), Logger::DEBUG));
 
     $log->info("handle event", ["request" => $_POST]);
+
     $eve = $_POST["event"];
     $target = $eve[0];
     $source = $target["source"];
     $log->info("target source", ["request" => $source]);
 
-    // LINEに今月の合計を返す
 
     /*
     $client = new \GuzzleHttp\Client();
