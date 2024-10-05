@@ -24,6 +24,7 @@
     $log->info("target source", ["request" => $source]);
 
 
+    /*
     $client = new \GuzzleHttp\Client();
     $config = new \LINE\Clients\MessagingApi\Configuration();
     $config->setAccessToken($_ENV["ACCESSTOKEN"]);
