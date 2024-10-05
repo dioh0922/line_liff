@@ -33,6 +33,8 @@
     // cURLセッションの初期化
     $ch = curl_init($url);
 
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // レスポンスを文字列として返す
+    curl_setopt($ch, CURLOPT_POST, true); // POSTリクエスト
     curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
 
     // リクエストの実行
