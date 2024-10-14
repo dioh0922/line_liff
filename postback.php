@@ -2,6 +2,8 @@
     require_once("./vendor/autoload.php");
     use Monolog\Logger;
     use Monolog\Handler\StreamHandler;
+    use GeminiAPI\Client;
+    use GeminiAPI\Resources\Parts\TextPart;
 
     $env = Dotenv\Dotenv::createImmutable(dirname(__FILE__)."/../env");
     $env->load();
@@ -25,9 +27,72 @@
     $log = new Logger("postback-log");
     $log->pushHandler(new StreamHandler(sprintf("logs/%s.log", date("Ymd")), Logger::DEBUG));
     $log->info("receive event");
+    $log->info("raw_request", ["raw_data" => $json]);
 
     if($json != null){
-        
+
+        if($json->events[0]->type === "message"){
+            //入力してきた内容はmessageイベント
+
+            $today = date("Y-m-d");
+            $current = ORM::for_table("g_access_count")
+            ->select("access_count")
+            ->where("access_day", $today)
+            ->where("api_type", 1)
+            ->find_one();
+
+            $limit = false;
+            $today = date("Y-m-d");
+            if($current != null){
+                if($current->access_count >= $_ENV["G_ACCESS_LIMIT"]){
+                    $limit = true;
+                }else{
+                    $access = ORM::for_table("g_access_count")
+                    ->select("*")
+                    ->where("access_day", $today)
+                    ->where("api_type", 1)
+                    ->find_one();
+                    $access->access_count++;
+                    $access->save();
+                }
+            }else{
+                $access = ORM::for_table("g_access_count")->create();
+                $access->access_day = $today;
+                $access->api_type = 1;
+                $access->save();
+            }
+
+            if(!$limit){
+                $client = new \GuzzleHttp\Client();
+                $config = new \LINE\Clients\MessagingApi\Configuration();
+                $config->setAccessToken($_ENV["ACCESSTOKEN"]);
+                $messagingApi = new \LINE\Clients\MessagingApi\Api\MessagingApiApi(
+                    client: $client,
+                    config: $config,
+                );
+
+                $client = new Client($_ENV["GEMINI_API"]);
+                $response = $client->geminiPro()->generateContent(
+                    new TextPart('日本語で回答してください。\n' . $json->events[0]->message->text),
+                );
+                $replyMessage = $response->text();
+            }else{
+                $replyMessage = "本日の制限を超えています";
+            }
+
+            $message = new \LINE\Clients\MessagingApi\Model\TextMessage(["type" => "text","text" => $replyMessage]);
+            $request = new \LINE\Clients\MessagingApi\Model\PushMessageRequest([
+                'to' => $json->events[0]->source->userId,
+                'messages' => [$message],
+            ]);
+            $log->info("create message", ["message" => $message]);
+
+            $response = $messagingApi->pushMessage($request);
+            $log->info("success send message", ["response" => $response]);
+
+            return ;
+        }
+
         $data = $json->events[0]->postback->data;
         $to_user_id = $json->events[0]->source->userId;
         $params = explode("=", $data);
