@@ -72,11 +72,16 @@
                     config: $config,
                 );
                 $log->info("request message", ["message" => $json->events[0]->message->text]);
-                $client = new Client($_ENV["GEMINI_API"]);
-                $response = $client->geminiPro()->generateContent(
-                    new TextPart('日本語で回答してください。\n' . $json->events[0]->message->text),
-                );
-                $replyMessage = $response->text();
+                try{
+                    $client = new Client($_ENV["GEMINI_API"]);
+                    $response = $client->geminiPro()->generateContent(
+                        new TextPart('日本語で回答してください。\n' . $json->events[0]->message->text),
+                    );
+                    $replyMessage = $response->text();    
+                }catch(Exception $e){
+                    $replyMessage = "エラーになりました";
+                    $log->error($e);
+                }
 
             }else{
                 $replyMessage = "本日の制限を超えています";
