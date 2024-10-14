@@ -29,6 +29,7 @@
     $log->info("receive event");
     $log->info("raw_request", ["raw_data" => $json]);
 
+
     if($json != null){
 
         if($json->events[0]->type === "message"){

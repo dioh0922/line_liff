@@ -4,7 +4,7 @@
     use Monolog\Handler\StreamHandler;
 
     use LINE\LINEBot\Constant\HTTPHeader;
-    use LINE\LINEBot\HTTPClient\CurlHTTPClient;
+
     use LINE\LINEBot;
 
     $env = Dotenv\Dotenv::createImmutable(dirname(__FILE__)."/../../../env");
@@ -18,35 +18,38 @@
 
     $log->info("handle event", ["request" => $_POST]);
 
-    /*
-    // LINEに今月の合計を返す
-    $credit = ORM::for_table("credit")->create();
-    $credit->pay_value = $_POST["value"];
-    $credit->pay_detail = $_POST["detail"];
-    $credit->set_expr("created_date", "NOW()");
-    $credit->save();
-    $month = date("Y-m-01");
-    $next_month = date('Y-m-d', strtotime('first day of next month', strtotime(date('Y-m-d'))));
+    $token = $_POST["token"];
+    if($token == null){
+        $token = $_ENV["UID"];
+    }
 
-    $sum = ORM::for_table("credit")
-    ->where_raw('(`created_date` > ? AND `created_date` < ?) AND is_deleted = 0', array($month, $next_month))
-    ->sum("pay_value");
-
-    $client = new \GuzzleHttp\Client();
-    $config = new \LINE\Clients\MessagingApi\Configuration();
-    $config->setAccessToken($_ENV["ACCESSTOKEN"]);
-    $messagingApi = new \LINE\Clients\MessagingApi\Api\MessagingApiApi(
-    client: $client,
-    config: $config,
-    );
-
-    $message = new \LINE\Clients\MessagingApi\Model\TextMessage(['type' => 'text','text' => sprintf("今月は合計：%s", number_format($sum))]);
-    $request = new \LINE\Clients\MessagingApi\Model\PushMessageRequest([
-        'to' => $_ENV["UID"],
-        'messages' => [$message],
+    // POSTデータを設定
+    $postFields = http_build_query([
+        "id_token" => $token,
+        "client_id" => $_ENV["CHANNELID"]
     ]);
-    $response = $messagingApi->pushMessage($request);
-    */
 
-    echo json_encode($_POST, JSON_UNESCAPED_UNICODE);
+    $url = 'https://api.line.me/oauth2/v2.1/verify';
+
+    // cURLセッションの初期化
+    $ch = curl_init($url);
+
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true); // レスポンスを文字列として返す
+    curl_setopt($ch, CURLOPT_POST, true); // POSTリクエスト
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $postFields);
+
+    // リクエストの実行
+    $response = curl_exec($ch);
+
+    // エラーチェック
+    if (curl_errno($ch)) {
+        $log->error('Error: ',["msg" => curl_error($ch)]);
+    }
+
+    // cURLセッションを閉じる
+    curl_close($ch);
+
+    $log->info("response", ["res" => $response]);
+
+    echo $response;
 ?>
