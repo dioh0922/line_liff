@@ -9,7 +9,7 @@ use \Pimple\Container;
 $container = new Container();
 
 $container["db"] = function () {
-    $dbh = new PDO(sprintf('mysql:dbname=%s;host='.$_ENV["DB_HOST"], $_ENV["DB_DB"]), $_ENV["DB_USER"], $_ENV["DB_PASS"]);
+    $dbh = new PDO(sprintf('mysql:dbname=%s;host=127.0.0.1', $_ENV["DB_DB"]), $_ENV["DB_USER"], $_ENV["DB_PASS"]);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $dbh;
 };
