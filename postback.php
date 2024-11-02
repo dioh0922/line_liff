@@ -232,6 +232,57 @@
                 $log->info("success send message", ["response" => $response]);
 
                 break;
+            case "svr":
+                $client = new \GuzzleHttp\Client();
+                $config = new \LINE\Clients\MessagingApi\Configuration();
+                $config->setAccessToken($_ENV["ACCESSTOKEN"]);
+                $messagingApi = new \LINE\Clients\MessagingApi\Api\MessagingApiApi(
+                    client: $client,
+                    config: $config,
+                );
+
+                $str = [];
+                $cert_log = $_ENV["BATCH_LOG_DIR"] . "/cert.log";
+                $datePattern = '/([A-Za-z]{3} \s*\d{1,2} \s*\d{2}:\d{2}:\d{2} \s*[APM]{2} \s*[A-Z]{3} \s*\d{4})/';
+                $latestDate = null;
+                if(file_exists($cert_log)){
+                    $log_str = file_get_contents($cert_log);
+                    preg_match_all($datePattern, $log_str, $matches);
+    
+                    foreach ($matches[0] as $date) {
+                        $timestamp = strtotime($date);
+                        if ($latestDate === null || $timestamp > strtotime($latestDate)) {
+                            $dateTime = DateTime::createFromFormat('M d H:i:s A T Y', $date);
+                            $latestDate = $dateTime->format('Y/m/d');
+                        }
+                    }
+
+                    $str[] = "certbot最新：" . $latestDate;
+                }
+                
+
+                $mydns_log = $_ENV["BATCH_LOG_DIR"] . "/notice_mydns.jp";
+                $datePattern = '/(\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2} UTC)/';
+                $latestDate = null;
+                if(file_exists($mydns_log)){
+                    $log_str = file_get_contents($mydns_log);
+                    preg_match($datePattern, $log_str, $matches);
+                    $dateTime = DateTime::createFromFormat('Y/m/d H:i:s T', $matches[0]);
+                    $latestDate = $dateTime->format('Y/m/d');
+                    $str[] = "mydns最新：" . $latestDate;
+                }
+            
+                $message = new \LINE\Clients\MessagingApi\Model\TextMessage(["type" => "text","text" => implode("\n", $str)]);
+                $request = new \LINE\Clients\MessagingApi\Model\PushMessageRequest([
+                    //"to" => $_ENV["UID"],
+                    "to" => $to_user_id,
+                    "messages" => [$message],
+                ]);
+                
+                $response = $messagingApi->pushMessage($request);
+                $log->info("batch current", ["log" => $str]);
+
+                break;
             default:
                 $log->info("missing action", ["event" => $params[1]]);
                 break;

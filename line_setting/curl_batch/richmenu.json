@@ -54,9 +54,9 @@
         "height": 810
       },
       "action": {
-        "type": "uri",
-        "label": "dbg",
-        "uri": "https://liff.line.me/1661128633-1x7VQwKm/test"
+        "type": "postback",
+        "displayText": "旅行",
+        "data":"action=svr"
       }
     },
     {
