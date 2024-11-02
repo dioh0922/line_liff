@@ -55,7 +55,7 @@
       },
       "action": {
         "type": "postback",
-        "displayText": "旅行",
+        "displayText": "サーババッチ確認",
         "data":"action=svr"
       }
     },
