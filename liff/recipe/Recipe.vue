@@ -24,7 +24,11 @@
                 </v-list>
               </div>
             </v-row>
-            
+
+            <v-row>
+              <v-btn class="mx-auto mt-10" width="80%" color="blue" @click="callApi">変換</v-btn>
+            </v-row>
+
             <v-row>
               <v-btn class="mx-auto mt-10" width="80%" color="grey" @click="done">トークに戻る</v-btn>
             </v-row>
@@ -51,17 +55,15 @@ const dialog = ref({
   msg: "",
   disp: false
 })
-const list = ref([]);
-const target = ref(0);
+const list = ref([])
+const target = ref(0)
 
 const openAddDialog = () => {
   addDisp.value = true
 }
 const add = (e) => {
-  list.value.push({...e, translate: null})
+  list.value.push({...e, id: list.value.length + 1, translate: null})
   addDisp.value = false
-  console.log(list.value)
-  callApi()
 }
 const closeAddDialog = () => {
   addDisp.value = false
@@ -76,24 +78,30 @@ const calc = (obj) => {
 }
 
 const done = () => {
-  liff.closeWindow();
+  liff.closeWindow()
 }
 const closeDialog = () => {
-  dialog.value.msg = "";
-  dialog.value.disp = false;
+  dialog.value.msg = ""
+  dialog.value.disp = false
 }
 
 const callApi = () => {
   loading.value = true
-  axios.post("./aiTranslate.php", {}).then((res) => {
-    console.log(res)
+  axios.post("./aiTranslate.php", list.value.map(item => {return {id: item.id, value:item.item + ':' + item.type + item.value}}))
+  .then((res) => {
+    loading.value = false
+    res.data.forEach(el => {
+      const target = list.value.find(item => item.id === el.id)
+      target.translate = el.gram
+    })
   })
 }
 
 onMounted(() => {
   axios.get("../../../util_api/liffId.php").then((res) => {
     liff.init({liffId: res.data.liffId}).then(() => {    
-      isInit.value = true;
+      isInit.value = true
+      loading.value = false
     });
   });
 });
