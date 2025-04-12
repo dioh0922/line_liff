@@ -46,7 +46,8 @@
                               </v-expansion-panel-title>
 
                               <v-expansion-panel-text  v-for="(item, idx) in lists">
-                                  <v-btn color="warning" width="100%" :loading="loading" @click="showTodo(item)">{{item.title}}</v-btn>                                            
+                                  <v-btn color="warning" width="80%" :loading="loading" @click="showTodo(item)">{{item.item}}</v-btn>                                            
+                                  <v-btn color="green-lighten-1" width="20%" @click="taskDone(item)" :loading="loading">完了</v-btn>
                               </v-expansion-panel-text>
                           </v-expansion-panel>
                       </v-expansion-panels>
@@ -90,8 +91,8 @@ const submit = () => {
   loading.value = true;
 
   let post_data = new FormData();
-  post_data.append("title", title.value);
-  post_data.append("todo", todo.value);
+  post_data.append("item", title.value);
+  post_data.append("detail", todo.value);
   axios.post("./save.php", post_data).then(res => {
       complete.value = true;
       getList();
@@ -114,7 +115,7 @@ const getList = () => {
   });
 }
 const showTodo = (item) => {
-  taskDialog.value.title = item.title;
+  taskDialog.value.title = item.item;
   taskDialog.value.detail = item.detail;
   taskDialog.value.disp = true;
 }
@@ -123,9 +124,9 @@ const closeTodo = () => {
   taskDialog.value.detail = "";
   taskDialog.value.disp = false;
 }
-const taskDone = (title) => {
+const taskDone = (item) => {
   let post_data = new FormData();
-  post_data.append("title", title);
+  post_data.append("id", item.id);
   loading.value = true;
   axios.post("./done.php", post_data).then(response => {
     if(response.data.result == 1){

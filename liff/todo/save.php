@@ -7,12 +7,20 @@
     ORM::configure("username", $_ENV["DB_USER"]);
     ORM::configure("password", $_ENV["DB_PASS"]);
 
-    $task = ORM::for_table("tasks")->create();
-    $task->summary = $_POST["title"];
-    $task->detail = $_POST["todo"];
-    $task->set_expr("created_at", "NOW()");
-    $task->set_expr("updated_at", "NOW()");
+    $task = ORM::for_table("wish_list")->create();
+    $task->item_name = $_POST["item"];
+    $task->wish_detail = $_POST["detail"];
+    $task->where("is_delete", 0);
     $task->save();
+
+    $lists = ORM::for_table("wish_list")
+    ->select("id", "id")
+    ->select("date", "date")
+    ->select("item_name", "item")
+    ->select("wish_detail", "detail")
+    ->where("is_delete", 0)
+    ->order_by_desc("date")
+    ->find_array();
 
     $response = ["result" => 1];
 
