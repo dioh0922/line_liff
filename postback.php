@@ -1,5 +1,6 @@
 <?php
     require_once("./vendor/autoload.php");
+    require_once(dirname(__DIR__)."/lib/GeminiCall.php");
     use Monolog\Logger;
     use Monolog\Handler\StreamHandler;
     use GeminiAPI\Client;
@@ -73,11 +74,8 @@
                 );
                 $log->info("request message", ["message" => $json->events[0]->message->text]);
                 try{
-                    $client = new Client($_ENV["GEMINI_API"]);
-                    $response = $client->geminiPro()->generateContent(
-                        new TextPart('日本語で回答してください。\n' . $json->events[0]->message->text),
-                    );
-                    $replyMessage = $response->text();    
+                    $gemini = new GeminiCall();
+                    $replyMessage = $gemini->callText('日本語で回答してください。\n' . $json->events[0]->message->text);
                 }catch(Exception $e){
                     $replyMessage = "エラーになりました";
                     $log->error($e);
@@ -153,6 +151,7 @@
 
                 break; 
             case "travel":
+                // TODO: plan_memoの一覧にする action=plan
 
                 $month = date("Y-m-01 00:00:00");
                 $next_month = date("Y-m-d", strtotime("first day of next month", strtotime(date("Y-m-d"))));

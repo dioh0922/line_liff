@@ -7,14 +7,16 @@
     ORM::configure("username", $_ENV["DB_USER"]);
     ORM::configure("password", $_ENV["DB_PASS"]);
 
-    $tasks = ORM::for_table("tasks")
-    ->select("summary", "title")
-    ->select("detail", "detail")
+    $lists = ORM::for_table("wish_list")
+    ->select("id", "id")
+    ->select("date", "date")
+    ->select("item_name", "item")
+    ->select("wish_detail", "detail")
     ->where("is_delete", 0)
-    ->order_by_desc("created_at")
+    ->order_by_desc("date")
     ->find_array();
 
-    $response = ["result" => 1, "lists" => $tasks];
+    $response = ["result" => 1, "lists" => $lists];
 
     echo json_encode($response, JSON_UNESCAPED_UNICODE);
 ?>

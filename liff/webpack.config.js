@@ -10,7 +10,7 @@ module.exports = {
 
   entry: {
     "credit":"./credit/credit.ts",
-    //"todo":"./todo/todo.ts",
+    "todo":"./todo/todo.ts",
     //"rate":"./ex_rate/rate.ts",
     "travel": "./travel/travel.ts",
     "recipe": "./recipe/recipe.ts",

@@ -7,16 +7,11 @@
     ORM::configure("username", $_ENV["DB_USER"]);
     ORM::configure("password", $_ENV["DB_PASS"]);
 
-    ORM::configure('id_column_overrides', array(
-      'dev_task_list' => 'todo_title',
-    ));    
-
-    $done = ORM::for_table("dev_task_list")
+    $done = ORM::for_table("wish_list")
     ->select("*")
-    ->where_raw('todo_title = ?', $_POST["title"])
+    ->where('id', $_POST["id"])
     ->find_one();
-    $done->set_expr("completed_date", "NOW()");
-    $done->set_expr("is_completed", "1");
+    $done->set_expr("is_delete", 1);
     $done->save();
 
     $response = ["result" => 1];
