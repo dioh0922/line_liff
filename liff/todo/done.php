@@ -7,10 +7,6 @@
     ORM::configure("username", $_ENV["DB_USER"]);
     ORM::configure("password", $_ENV["DB_PASS"]);
 
-    ORM::configure('id_column_overrides', array(
-      'dev_task_list' => 'todo_title',
-    ));    
-
     $done = ORM::for_table("wish_list")
     ->select("*")
     ->where('id', $_POST["id"])

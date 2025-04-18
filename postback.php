@@ -151,6 +151,7 @@
 
                 break; 
             case "travel":
+                // TODO: plan_memoの一覧にする action=plan
 
                 $month = date("Y-m-01 00:00:00");
                 $next_month = date("Y-m-d", strtotime("first day of next month", strtotime(date("Y-m-d"))));

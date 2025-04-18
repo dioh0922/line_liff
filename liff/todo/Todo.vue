@@ -2,7 +2,7 @@
 
 <v-app>
   <v-app-bar flat color="red-lighten-4" text-align="center" app>
-      <h3 class="mx-auto">TODO追加</h3>
+      <h3 class="mx-auto">買うもの</h3>
   </v-app-bar>
   <v-main>
       <v-container>
@@ -42,7 +42,7 @@
                       <v-expansion-panels color="mt-1" v-if="isInit">
                           <v-expansion-panel>
                               <v-expansion-panel-title color="green-lighten-4">
-                                  開発TODO
+                                  リスト
                               </v-expansion-panel-title>
 
                               <v-expansion-panel-text  v-for="(item, idx) in lists">
