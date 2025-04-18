@@ -28,7 +28,7 @@
           "height": 810
         },
         "action": {
-          "type": "postback",
+          "type": "uri",
           "label":"TODO表示",
           "uri":"https://liff.line.me/1661128633-1x7VQwKm/todo"
         }
@@ -81,7 +81,7 @@
       },
       "action": {
         "type": "uri",
-        "displayText": "旅行",
+        "label": "ネタ帳",
         "uri":"https://route-memo.onrender.com/"
       }
     }
