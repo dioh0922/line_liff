@@ -13,16 +13,9 @@
     ORM::configure("password", $_ENV["DB_PASS"]);
 
     $json = json_decode(file_get_contents("php://input"));
-    $param_list = [
+    $paramList = [
         "action" => 0,
         "mode" => 1
-    ];
-    $mode_list = [
-        "reminder" => 1,
-        "todo" => 2,
-        "movie" => 3,
-        "travel" => 4,
-        "none" => 99
     ];
 
     $log = new Logger("postback-log");
@@ -99,9 +92,9 @@
         }
 
         $data = $json->events[0]->postback->data;
-        $to_user_id = $json->events[0]->source->userId;
+        $toUserId = $json->events[0]->source->userId;
         $params = explode("=", $data);
-        if(!array_key_exists($params[0], $param_list)){
+        if(!array_key_exists($params[0], $paramList)){
             // dataに含まれているべき内容のみの場合は実行する
             $log->error("invalid data");        
             return;
@@ -141,7 +134,7 @@
                 $message = new \LINE\Clients\MessagingApi\Model\TextMessage(["type" => "text","text" => $str]);
                 $request = new \LINE\Clients\MessagingApi\Model\PushMessageRequest([
                     //"to" => $_ENV["UID"],
-                    "to" => $to_user_id,
+                    "to" => $toUserId,
                     "messages" => [$message],
                 ]);
 
@@ -183,7 +176,7 @@
                 $message = new \LINE\Clients\MessagingApi\Model\TextMessage(["type" => "text","text" => $str]);
                 $request = new \LINE\Clients\MessagingApi\Model\PushMessageRequest([
                     //"to" => $_ENV["UID"],
-                    "to" => $to_user_id,
+                    "to" => $toUserId,
                     "messages" => [$message],
                 ]);
 
@@ -222,7 +215,7 @@
                 $message = new \LINE\Clients\MessagingApi\Model\TextMessage(["type" => "text","text" => $str]);
                 $request = new \LINE\Clients\MessagingApi\Model\PushMessageRequest([
                     //"to" => $_ENV["UID"],
-                    "to" => $to_user_id,
+                    "to" => $toUserId,
                     "messages" => [$message],
                 ]);
                 
@@ -241,12 +234,12 @@
                 );
 
                 $str = [];
-                $cert_log = $_ENV["BATCH_LOG_DIR"] . "/cert.log";
+                $certLog = $_ENV["BATCH_LOG_DIR"] . "/cert.log";
                 $datePattern = '/([A-Za-z]{3} \s*\d{1,2} \s*\d{2}:\d{2}:\d{2} \s*[APM]{2} \s*[A-Z]{3} \s*\d{4})/';
                 $latestDate = null;
-                if(file_exists($cert_log)){
-                    $log_str = file_get_contents($cert_log);
-                    preg_match_all($datePattern, $log_str, $matches);
+                if(file_exists($certLog)){
+                    $logStr = file_get_contents($certLog);
+                    preg_match_all($datePattern, $logStr, $matches);
     
                     foreach ($matches[0] as $date) {
                         $timestamp = strtotime($date);
@@ -260,12 +253,12 @@
                 }
                 
 
-                $mydns_log = $_ENV["BATCH_LOG_DIR"] . "/notice_mydns.jp";
+                $mydnsLog = $_ENV["BATCH_LOG_DIR"] . "/notice_mydns.jp";
                 $datePattern = '/(\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2} UTC)/';
                 $latestDate = null;
-                if(file_exists($mydns_log)){
-                    $log_str = file_get_contents($mydns_log);
-                    preg_match($datePattern, $log_str, $matches);
+                if(file_exists($mydnsLog)){
+                    $logStr = file_get_contents($mydnsLog);
+                    preg_match($datePattern, $logStr, $matches);
                     $dateTime = DateTime::createFromFormat('Y/m/d H:i:s T', $matches[0]);
                     $latestDate = $dateTime->format('Y/m/d');
                     $str[] = "mydns最新：" . $latestDate;
@@ -274,7 +267,7 @@
                 $message = new \LINE\Clients\MessagingApi\Model\TextMessage(["type" => "text","text" => implode("\n", $str)]);
                 $request = new \LINE\Clients\MessagingApi\Model\PushMessageRequest([
                     //"to" => $_ENV["UID"],
-                    "to" => $to_user_id,
+                    "to" => $toUserId,
                     "messages" => [$message],
                 ]);
                 
