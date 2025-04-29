@@ -1,6 +1,6 @@
 <?php
     require_once("./vendor/autoload.php");
-    require_once(dirname(__DIR__)."/lib/GeminiCall.php");
+    require_once(dirname(__FILE__)."/lib/GeminiCall.php");
     use Monolog\Logger;
     use Monolog\Handler\StreamHandler;
     use GeminiAPI\Client;
@@ -275,6 +275,50 @@
                 $log->info("batch current", ["log" => $str]);
 
                 break;
+
+            case "idea":
+                $plan = ORM::for_table("plan_memo")
+                ->select("summary")
+                ->select("detail")
+                ->where("is_delete", 0)
+                ->order_by_desc("id")
+                ->find_array();
+                $planJson = json_encode($plan, JSON_UNESCAPED_UNICODE);
+
+                try{
+                    $gemini = new GeminiCall();
+                    $requestTextList = ["日本語で回答してください。"];
+                    $requestTextList[] = "入力されたアイデアや予定の情報からあなたなりに、行うタスクをいくつか選択してください";
+                    $requestTextList[] = "summaryごとに優先順位をつけて、判断してください。";
+                    $requestTextList[] = "回答は箇条書きで端的に出力してください";
+                    $requestTextList[] = $planJson;
+                    $replyMessage = $gemini->callText(implode("\n", $requestTextList));
+                }catch(Exception $e){
+                    $replyMessage = "エラーになりました";
+                    $log->error($e);
+                }
+
+                $client = new \GuzzleHttp\Client();
+                $config = new \LINE\Clients\MessagingApi\Configuration();
+                $config->setAccessToken($_ENV["ACCESSTOKEN"]);
+                $messagingApi = new \LINE\Clients\MessagingApi\Api\MessagingApiApi(
+                client: $client,
+                config: $config,
+                );
+            
+                $message = new \LINE\Clients\MessagingApi\Model\TextMessage(["type" => "text","text" => $replyMessage]);
+                $request = new \LINE\Clients\MessagingApi\Model\PushMessageRequest([
+                    //"to" => $_ENV["UID"],
+                    "to" => $toUserId,
+                    "messages" => [$message],
+                ]);
+
+                $response = $messagingApi->pushMessage($request);
+
+                $log->info("success send message", ["response" => $response]);
+
+                break;
+
             default:
                 $log->info("missing action", ["event" => $params[1]]);
                 break;
