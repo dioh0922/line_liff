@@ -80,9 +80,9 @@
         "height": 810
       },
       "action": {
-        "type": "uri",
-        "label": "ネタ帳",
-        "uri":"https://route-memo.onrender.com/"
+        "type": "postback",
+        "displayText": "タスク確認",
+        "data":"action=idea"
       }
     }
   ]
