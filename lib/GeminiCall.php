@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__DIR__)."/../vendor/autoload.php");
+require_once(dirname(__FILE__)."/../vendor/autoload.php");
 
 class GeminiCall{
   private $url = "https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent?key=%s";
